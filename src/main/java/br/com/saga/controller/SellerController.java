@@ -27,7 +27,7 @@ public class SellerController {
     @GetMapping
     @Operation(summary = "Listar vendedores paginados", description = "Retorna todos os vendedores com paginação")
     @ApiResponse(responseCode = "200", description = "Lista de vendedores retornada com sucesso")
-    public ResponseEntity<Page<SellerResponse>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<SellerResponse>> findAll(@PageableDefault(size = 20, sort = "sellerId") Pageable pageable) {
         return ResponseEntity.ok(sellerService.findAll(pageable));
     }
 

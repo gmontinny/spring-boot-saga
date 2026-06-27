@@ -27,7 +27,7 @@ public class CustomerController {
     @GetMapping
     @Operation(summary = "Listar clientes paginados", description = "Retorna todos os clientes com paginação")
     @ApiResponse(responseCode = "200", description = "Lista de clientes retornada com sucesso")
-    public ResponseEntity<Page<CustomerResponse>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<CustomerResponse>> findAll(@PageableDefault(size = 20, sort = "customerId") Pageable pageable) {
         return ResponseEntity.ok(customerService.findAll(pageable));
     }
 

@@ -3,6 +3,7 @@ package br.com.saga.saga;
 import br.com.saga.config.KafkaConfig;
 import br.com.saga.domain.entity.*;
 import br.com.saga.domain.enums.SagaStatus;
+import br.com.saga.dto.event.SellerNotificationEvent;
 import br.com.saga.dto.request.OrderRequest;
 import br.com.saga.dto.response.OrderResponse;
 import br.com.saga.exception.BusinessException;
@@ -86,9 +87,22 @@ public class SagaOrchestrator {
             kafkaTemplate.send(KafkaConfig.ORDER_CREATED_TOPIC, order.getOrderId(), order);
 
             request.getItems().stream()
-                    .map(OrderRequest.OrderItemRequest::getSellerId)
-                    .distinct()
-                    .forEach(sellerId -> kafkaTemplate.send(KafkaConfig.SELLER_NOTIFIED_TOPIC, sellerId, order.getOrderId()));
+                    .collect(java.util.stream.Collectors.groupingBy(OrderRequest.OrderItemRequest::getSellerId))
+                    .forEach((sellerId, sellerItems) -> {
+                        SellerNotificationEvent event = SellerNotificationEvent.builder()
+                                .sellerId(sellerId)
+                                .orderId(order.getOrderId())
+                                .customerId(request.getCustomerId())
+                                .orderDate(order.getOrderPurchaseTimestamp())
+                                .items(sellerItems.stream()
+                                        .map(i -> SellerNotificationEvent.ItemDetail.builder()
+                                                .productId(i.getProductId())
+                                                .price(i.getPrice())
+                                                .freightValue(i.getFreightValue())
+                                                .build()).toList())
+                                .build();
+                        kafkaTemplate.send(KafkaConfig.SELLER_NOTIFIED_TOPIC, sellerId, event);
+                    });
 
             OrderResponse response = orderMapper.toResponse(order);
             response.setItems(request.getItems().stream()
@@ -98,6 +112,13 @@ public class SagaOrchestrator {
                             .price(i.getPrice())
                             .freightValue(i.getFreightValue())
                             .build()).toList());
+            if (request.getPayment() != null) {
+                response.setPayments(java.util.List.of(OrderResponse.PaymentResponse.builder()
+                        .paymentType(request.getPayment().getPaymentType())
+                        .paymentInstallments(request.getPayment().getInstallments())
+                        .paymentValue(request.getPayment().getValue())
+                        .build()));
+            }
             return response;
 
         } catch (Exception e) {

@@ -27,7 +27,7 @@ public class ProductController {
     @GetMapping
     @Operation(summary = "Listar produtos paginados", description = "Retorna todos os produtos com paginação")
     @ApiResponse(responseCode = "200", description = "Lista de produtos retornada com sucesso")
-    public ResponseEntity<Page<ProductResponse>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<ProductResponse>> findAll(@PageableDefault(size = 20, sort = "productId") Pageable pageable) {
         return ResponseEntity.ok(productService.findAll(pageable));
     }
 

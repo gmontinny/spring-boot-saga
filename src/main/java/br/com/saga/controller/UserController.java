@@ -31,7 +31,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "Lista de usuários retornada"),
             @ApiResponse(responseCode = "403", description = "Acesso negado — requer ROLE_ADMIN")
     })
-    public ResponseEntity<Page<UserResponse>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<UserResponse>> findAll(@PageableDefault(size = 20, sort = "id") Pageable pageable) {
         return ResponseEntity.ok(userService.findAll(pageable));
     }
 

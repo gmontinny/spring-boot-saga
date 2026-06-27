@@ -30,7 +30,7 @@ public class OrderController {
     @GetMapping
     @Operation(summary = "Listar pedidos paginados", description = "Retorna todos os pedidos com paginação")
     @ApiResponse(responseCode = "200", description = "Lista de pedidos retornada com sucesso")
-    public ResponseEntity<Page<OrderResponse>> findAll(@PageableDefault(size = 20) Pageable pageable) {
+    public ResponseEntity<Page<OrderResponse>> findAll(@PageableDefault(size = 20, sort = "orderPurchaseTimestamp", direction = org.springframework.data.domain.Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(orderService.findAll(pageable));
     }
 
@@ -49,7 +49,7 @@ public class OrderController {
     @ApiResponse(responseCode = "200", description = "Pedidos do cliente retornados")
     public ResponseEntity<Page<OrderResponse>> findByCustomer(
             @PathVariable String customerId,
-            @PageableDefault(size = 20) Pageable pageable) {
+            @PageableDefault(size = 20, sort = "orderPurchaseTimestamp", direction = org.springframework.data.domain.Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(orderService.findByCustomerId(customerId, pageable));
     }
 

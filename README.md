@@ -18,6 +18,7 @@ API RESTful de e-commerce com padrão **SAGA Orchestration** para gerenciamento 
 - [Vault](#-vault)
 - [Rate Limiting](#-rate-limiting)
 - [Swagger](#-swagger)
+- [Artigo Técnico](#-artigo-técnico)
 
 ---
 
@@ -975,6 +976,20 @@ O Swagger já inclui o botão **Authorize** para inserir o token JWT (`Bearer <t
 
 ---
 
+## 📄 Artigo Técnico
+
+Para uma visão aprofundada dos conceitos teóricos, decisões arquiteturais e referências científicas deste projeto, consulte o nosso artigo técnico:
+
+- 📖 **Artigo Técnico**: [Arquitetura de Microserviços Resilientes com Padrão SAGA Orchestration: Uma Implementação com Spring Boot 4.1.0 e Java 25](ARTIGO_TECNICO.md)
+
+### Tópicos Abordados
+- Introdução aos Microserviços e Transações Distribuídas
+- Detalhamento do Padrão SAGA (Orquestração vs Coreografia)
+- Fluxos de Compensação e Resiliência
+- Referências Bibliográficas (Richardson, Newman, Kleppmann)
+
+---
+
 ## 🧩 Padrões & Boas Práticas
 
 | Padrão | Implementação |
@@ -1018,3 +1033,17 @@ O Spring Boot 4.1.0 traz mudanças significativas em relação ao 3.x:
 ## 📄 Licença
 
 Este projeto é para fins educacionais e de demonstração.
+
+---
+
+## 📄 Artigo Técnico
+
+Para uma visão aprofundada dos conceitos teóricos, decisões arquiteturais e referências científicas deste projeto, consulte:
+
+📖 **[Arquitetura de Microserviços Resilientes com Padrão SAGA Orchestration](ARTIGO_TECNICO.md)**
+
+Tópicos abordados:
+- Fundamentação teórica do padrão SAGA (Garcia-Molina & Salem, 1987)
+- Comparação entre Orquestração e Coreografia
+- Desafios da migração para Spring Boot 4.1.0
+- Padrões aplicados e trabalhos futuros
