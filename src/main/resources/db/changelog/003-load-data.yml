@@ -1,0 +1,152 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-load-data
+      author: saga-app
+      changes:
+        - loadData:
+            tableName: customers
+            file: data/olist_customers_dataset.csv
+            separator: ","
+            encoding: UTF-8
+            columns:
+              - column:
+                  name: customer_id
+              - column:
+                  name: customer_unique_id
+              - column:
+                  name: customer_zip_code_prefix
+              - column:
+                  name: customer_city
+              - column:
+                  name: customer_state
+
+        - loadData:
+            tableName: sellers
+            file: data/olist_sellers_dataset.csv
+            separator: ","
+            encoding: UTF-8
+            columns:
+              - column:
+                  name: seller_id
+              - column:
+                  name: seller_zip_code_prefix
+              - column:
+                  name: seller_city
+              - column:
+                  name: seller_state
+
+        - loadData:
+            tableName: products
+            file: data/olist_products_dataset.csv
+            separator: ","
+            encoding: UTF-8
+            columns:
+              - column:
+                  name: product_id
+              - column:
+                  name: product_category_name
+              - column:
+                  name: product_name_lenght
+                  type: NUMERIC
+              - column:
+                  name: product_description_lenght
+                  type: NUMERIC
+              - column:
+                  name: product_photos_qty
+                  type: NUMERIC
+              - column:
+                  name: product_weight_g
+                  type: NUMERIC
+              - column:
+                  name: product_length_cm
+                  type: NUMERIC
+              - column:
+                  name: product_height_cm
+                  type: NUMERIC
+              - column:
+                  name: product_width_cm
+                  type: NUMERIC
+
+        - loadData:
+            tableName: orders
+            file: data/olist_orders_dataset.csv
+            separator: ","
+            encoding: UTF-8
+            columns:
+              - column:
+                  name: order_id
+              - column:
+                  name: customer_id
+              - column:
+                  name: order_status
+              - column:
+                  name: order_purchase_timestamp
+                  type: DATETIME
+              - column:
+                  name: order_approved_at
+                  type: DATETIME
+              - column:
+                  name: order_delivered_carrier_date
+                  type: DATETIME
+              - column:
+                  name: order_delivered_customer_date
+                  type: DATETIME
+              - column:
+                  name: order_estimated_delivery_date
+                  type: DATETIME
+
+        - loadData:
+            tableName: order_items
+            file: data/olist_order_items_dataset.csv
+            separator: ","
+            encoding: UTF-8
+            columns:
+              - column:
+                  name: order_id
+              - column:
+                  name: order_item_id
+                  type: NUMERIC
+              - column:
+                  name: product_id
+              - column:
+                  name: seller_id
+              - column:
+                  name: shipping_limit_date
+                  type: DATETIME
+              - column:
+                  name: price
+                  type: NUMERIC
+              - column:
+                  name: freight_value
+                  type: NUMERIC
+
+        - loadData:
+            tableName: order_payments
+            file: data/olist_order_payments_dataset.csv
+            separator: ","
+            encoding: UTF-8
+            columns:
+              - column:
+                  name: order_id
+              - column:
+                  name: payment_sequential
+                  type: NUMERIC
+              - column:
+                  name: payment_type
+              - column:
+                  name: payment_installments
+                  type: NUMERIC
+              - column:
+                  name: payment_value
+                  type: NUMERIC
+
+        - loadData:
+            tableName: product_category_translation
+            file: data/product_category_name_translation.csv
+            separator: ","
+            encoding: UTF-8
+            columns:
+              - column:
+                  name: product_category_name
+              - column:
+                  name: product_category_name_english

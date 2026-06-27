@@ -1,0 +1,308 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-tables
+      author: saga-app
+      changes:
+        - createTable:
+            tableName: customers
+            columns:
+              - column:
+                  name: customer_id
+                  type: varchar(64)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: customer_unique_id
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: customer_zip_code_prefix
+                  type: varchar(10)
+              - column:
+                  name: customer_city
+                  type: varchar(100)
+              - column:
+                  name: customer_state
+                  type: varchar(2)
+
+        - createTable:
+            tableName: sellers
+            columns:
+              - column:
+                  name: seller_id
+                  type: varchar(64)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: seller_zip_code_prefix
+                  type: varchar(10)
+              - column:
+                  name: seller_city
+                  type: varchar(100)
+              - column:
+                  name: seller_state
+                  type: varchar(2)
+
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: product_id
+                  type: varchar(64)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_category_name
+                  type: varchar(100)
+              - column:
+                  name: product_name_lenght
+                  type: int
+              - column:
+                  name: product_description_lenght
+                  type: int
+              - column:
+                  name: product_photos_qty
+                  type: int
+              - column:
+                  name: product_weight_g
+                  type: int
+              - column:
+                  name: product_length_cm
+                  type: int
+              - column:
+                  name: product_height_cm
+                  type: int
+              - column:
+                  name: product_width_cm
+                  type: int
+
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: order_id
+                  type: varchar(64)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: customer_id
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_status
+                  type: varchar(30)
+              - column:
+                  name: order_purchase_timestamp
+                  type: timestamp
+              - column:
+                  name: order_approved_at
+                  type: timestamp
+              - column:
+                  name: order_delivered_carrier_date
+                  type: timestamp
+              - column:
+                  name: order_delivered_customer_date
+                  type: timestamp
+              - column:
+                  name: order_estimated_delivery_date
+                  type: timestamp
+
+        - createTable:
+            tableName: order_items
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_item_id
+                  type: int
+              - column:
+                  name: product_id
+                  type: varchar(64)
+              - column:
+                  name: seller_id
+                  type: varchar(64)
+              - column:
+                  name: shipping_limit_date
+                  type: timestamp
+              - column:
+                  name: price
+                  type: decimal(10,2)
+              - column:
+                  name: freight_value
+                  type: decimal(10,2)
+
+        - createTable:
+            tableName: order_payments
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: payment_sequential
+                  type: int
+              - column:
+                  name: payment_type
+                  type: varchar(30)
+              - column:
+                  name: payment_installments
+                  type: int
+              - column:
+                  name: payment_value
+                  type: decimal(10,2)
+
+        - createTable:
+            tableName: order_reviews
+            columns:
+              - column:
+                  name: review_id
+                  type: varchar(64)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: varchar(64)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: review_score
+                  type: int
+              - column:
+                  name: review_comment_title
+                  type: varchar(255)
+              - column:
+                  name: review_comment_message
+                  type: text
+              - column:
+                  name: review_creation_date
+                  type: timestamp
+              - column:
+                  name: review_answer_timestamp
+                  type: timestamp
+
+        - createTable:
+            tableName: geolocation
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: geolocation_zip_code_prefix
+                  type: varchar(10)
+              - column:
+                  name: geolocation_lat
+                  type: double
+              - column:
+                  name: geolocation_lng
+                  type: double
+              - column:
+                  name: geolocation_city
+                  type: varchar(100)
+              - column:
+                  name: geolocation_state
+                  type: varchar(2)
+
+        - createTable:
+            tableName: product_category_translation
+            columns:
+              - column:
+                  name: product_category_name
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: product_category_name_english
+                  type: varchar(100)
+
+        - addForeignKeyConstraint:
+            baseTableName: orders
+            baseColumnNames: customer_id
+            referencedTableName: customers
+            referencedColumnNames: customer_id
+            constraintName: fk_orders_customer
+
+        - addForeignKeyConstraint:
+            baseTableName: order_items
+            baseColumnNames: order_id
+            referencedTableName: orders
+            referencedColumnNames: order_id
+            constraintName: fk_order_items_order
+
+        - addForeignKeyConstraint:
+            baseTableName: order_items
+            baseColumnNames: product_id
+            referencedTableName: products
+            referencedColumnNames: product_id
+            constraintName: fk_order_items_product
+
+        - addForeignKeyConstraint:
+            baseTableName: order_items
+            baseColumnNames: seller_id
+            referencedTableName: sellers
+            referencedColumnNames: seller_id
+            constraintName: fk_order_items_seller
+
+        - addForeignKeyConstraint:
+            baseTableName: order_payments
+            baseColumnNames: order_id
+            referencedTableName: orders
+            referencedColumnNames: order_id
+            constraintName: fk_order_payments_order
+
+        - addForeignKeyConstraint:
+            baseTableName: order_reviews
+            baseColumnNames: order_id
+            referencedTableName: orders
+            referencedColumnNames: order_id
+            constraintName: fk_order_reviews_order
+
+        - createIndex:
+            tableName: orders
+            indexName: idx_orders_customer_id
+            columns:
+              - column:
+                  name: customer_id
+
+        - createIndex:
+            tableName: order_items
+            indexName: idx_order_items_order_id
+            columns:
+              - column:
+                  name: order_id
+
+        - createIndex:
+            tableName: order_payments
+            indexName: idx_order_payments_order_id
+            columns:
+              - column:
+                  name: order_id

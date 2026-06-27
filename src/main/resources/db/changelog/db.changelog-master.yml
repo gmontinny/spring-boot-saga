@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/001-create-tables.yml
+  - include:
+      file: db/changelog/002-create-auth-tables.yml
+  - include:
+      file: db/changelog/003-load-data.yml
+  - include:
+      file: db/changelog/004-create-roles-tables.yml
