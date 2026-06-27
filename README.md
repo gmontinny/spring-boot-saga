@@ -849,6 +849,8 @@ application.yml  →  ${VAR:default}  →  Usa variável de ambiente ou fallback
 
 ### Modelo de Dados
 
+![Diagrama Entidade-Relacionamento](DER.png)
+
 ```
 ┌───────────────┐     ┌───────────────┐     ┌───────────────┐
 │   customers   │◄────│    orders     │────▶│ order_reviews │
